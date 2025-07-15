@@ -19,13 +19,13 @@ export class TodoEditorComponent {
 
   constructor(
     public dialogRef: MatDialogRef<TodoEditorComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: TodoDialogData,
-    private fb: FormBuilder
+    @Inject(MAT_DIALOG_DATA) public data: {deleteButtonVisible: boolean, todo: TodoDialogData},
+    private readonly fb: FormBuilder
   ) {
     this.todoForm = this.fb.group({
-      title: [data.title || '', Validators.required],
-      comment: [data.comment || ''],
-      status: [data.status || 'TODO'],
+      title: [data.todo.title || '', Validators.required],
+      comment: [data.todo.comment || ''],
+      status: [data.todo.status || 'TODO'],
     });
   }
 
