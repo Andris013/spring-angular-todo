@@ -2,8 +2,6 @@ package com.example.todo.model;
 
 import jakarta.persistence.*;
 
-import java.util.Date;
-
 @Entity
 public class Todo {
     @Id

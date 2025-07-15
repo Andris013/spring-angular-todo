@@ -2,7 +2,10 @@ import { CdkDragDrop, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Component } from '@angular/core';
 import { Todo } from 'src/shared/model/todo';
 import { TodoService } from 'src/shared/service/todo.service';
-import { TodoDialogData, TodoEditorComponent } from '../todo-editor/todo-editor.component';
+import {
+  TodoDialogData,
+  TodoEditorComponent,
+} from '../todo-editor/todo-editor.component';
 import { MatDialog } from '@angular/material/dialog';
 
 @Component({
@@ -22,7 +25,7 @@ export class TodoListComponent {
     return this.lists.map((l) => l.id);
   }
 
-  constructor(private todoService: TodoService, private dialog: MatDialog) {}
+  constructor(private readonly todoService: TodoService, private readonly dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.lists = [
@@ -74,16 +77,16 @@ export class TodoListComponent {
     });
   }
 
-    openCreateDialog(status: string): void {
+  openCreateDialog(status: string): void {
     const dialogRef = this.dialog.open(TodoEditorComponent, {
       width: '400px',
-      data: { title: '', description: '', status: status }
+      data: { deleteButtonVisible: false, todo: { title: '', description: '', status: status } },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      if (result.action === "save") {
+      if (result.action === 'save') {
         this.todoService.create(result.todo).subscribe({
-          next: () => this.fetchTodos()
+          next: () => this.fetchTodos(),
         });
       }
     });
@@ -92,20 +95,20 @@ export class TodoListComponent {
   openEditDialog(existingTodo: Todo): void {
     const dialogRef = this.dialog.open(TodoEditorComponent, {
       width: '400px',
-      data: { ...existingTodo }
+      data: { deleteButtonVisible: true, todo: { ...existingTodo } as TodoDialogData },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       if (!result) return;
 
-      if (result.action === "save") {
-        const todoToUpdate = {id: existingTodo.id, ...result.todo};
+      if (result.action === 'save') {
+        const todoToUpdate = { id: existingTodo.id, ...result.todo as TodoDialogData };
         this.todoService.update(todoToUpdate).subscribe({
-          next: () => this.fetchTodos()
+          next: () => this.fetchTodos(),
         });
-      } else if (result.action === "delete") {
+      } else if (result.action === 'delete') {
         this.todoService.delete(existingTodo.id!).subscribe({
-          next: () => this.fetchTodos()
+          next: () => this.fetchTodos(),
         });
       }
     });

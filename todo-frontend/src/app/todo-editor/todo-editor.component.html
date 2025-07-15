@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>{{ data.title ? 'Edit' : 'Create' }} TODO</h2>
+<h2 mat-dialog-title>{{ data.todo.title ? 'Edit' : 'Create' }} TODO</h2>
 
 <form [formGroup]="todoForm">
   <mat-dialog-content class="mat-typography">
@@ -23,7 +23,7 @@
   </mat-dialog-content>
 
   <mat-dialog-actions>
-    <button mat-button class="delete-button danger-button" (click)="onDelete()">Delete</button>
+    <button *ngIf="data.deleteButtonVisible" mat-button class="delete-button danger-button" (click)="onDelete()">Delete</button>
     <button mat-button (click)="onCancel()">Cancel</button>
     <button mat-flat-button (click)="onSave()" type="submit">Save</button>
   </mat-dialog-actions>
