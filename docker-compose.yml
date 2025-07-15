@@ -1,0 +1,19 @@
+version: '3.8'
+services:
+    backend:
+        build: ./todo-backend
+        ports: ["8080:8080"]
+        networks: [app-net]
+        environment:
+            TODO_DB_USER: ${DB_USERNAME}
+            TODO_DB_PASSWORD: ${DB_PASSWORD}
+            TODO_DB_URL: ${DB_URL}
+            
+    frontend:
+        build: ./todo-frontend
+        ports: ["4200:4200"]
+        depends_on: [backend]
+        networks: [app-net]
+      
+networks:
+    app-net:

@@ -1,0 +1,18 @@
+<div class="board">
+  <div
+    class="column"
+    *ngFor="let list of lists"
+    cdkDropList
+    [cdkDropListData]="list.items"
+    [cdkDropListConnectedTo]="connectedDropListsIds"
+    (cdkDropListDropped)="dropItem($event)"
+    [id]="list.id"
+  >
+    <h3>{{ list.label }}</h3>
+    <div class="todo-item" *ngFor="let todo of list.items" cdkDrag (click)="openEditDialog(todo)">
+      {{ todo.title }}
+    </div>
+
+    <button mat-button class="new-item-button" (click)="openCreateDialog(list.status)">New item</button>
+  </div>
+</div>
